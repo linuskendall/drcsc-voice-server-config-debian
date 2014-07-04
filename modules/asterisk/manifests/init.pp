@@ -36,37 +36,74 @@ class asterisk {
     ensure => present,
     source => "puppet:///modules/asterisk/drcsc-voice/extensions.conf",
     require => [ Package['asterisk'], User['asterisk'] ],
+    owner => 'asterisk',
+    group => 'asterisk',
+    mode => 640,
     notify => [ Service['asterisk'] ],
   }
 
   file { "/etc/asterisk/farmers-network.conf":
     ensure => present,
     source => "puppet:///modules/asterisk/drcsc-voice/farmers-network.conf",
+    owner => 'asterisk',
+    group => 'asterisk',
+    mode => 640,
     require => [ Package['asterisk'], User['asterisk'] ],
+    notify => [ Service['asterisk'] ],
+  }
+
+  file { "/etc/asterisk/modules.conf":
+    ensure => present,
+    source => "puppet:///modules/asterisk/drcsc-voice/modules.conf",
+    require => [ Package['asterisk'], User['asterisk'] ],
+    owner => 'asterisk',
+    group => 'asterisk',
+    mode => 640,
     notify => [ Service['asterisk'] ],
   }
 
   file { "/etc/asterisk/sip.conf":
     ensure => present,
     source => "puppet:///modules/asterisk/drcsc-voice/sip.conf",
+    owner => 'asterisk',
+    group => 'asterisk',
+    mode => 640,
     require => [ Package['asterisk'], User['asterisk'] ],
     notify => [ Service['asterisk'] ],
   }
 
-  file { "/var/lib/asterisk/agi-bin/":
+  file { "/usr/share/asterisk/agi-bin/":
     ensure => directory,
     owner => 'asterisk',
     group => 'asterisk',
+    mode => 755,
     require => [ Package['asterisk'], User['asterisk'] ],
     notify => [ Service['asterisk'] ],
   }
 
-  file { "/var/lib/asterisk/agi-bin/googletts.agi":
+  package { "mpg321":
+    ensure => "installed",
+  }
+
+  package { "sox":
+    ensure => "installed",
+  }
+
+
+  file { "/usr/local/bin/googletts-cli.pl":
+    ensure => "present",
+    mode => 755,
+    source => "puppet:///modules/asterisk/drcsc-voice/googletts-cli.pl",
+    require => [Package["mpg321"], Package["sox"] ],
+  }
+
+  file { "/usr/share/asterisk/agi-bin/googletts.agi":
     ensure => directory,
     source => "puppet:///modules/asterisk/drcsc-voice/googletts.agi",
     owner => 'asterisk',
     group => 'asterisk',
-    require => [ Package['asterisk'], User['asterisk'] ],
+    mode => 755,
+    require => [ Package['asterisk'], User['asterisk'], Package["mpg321"], Package["sox"] ],
     notify => [ Service['asterisk'] ],
   }
 
