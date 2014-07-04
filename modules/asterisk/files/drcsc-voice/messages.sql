@@ -33,7 +33,7 @@ CREATE TABLE `users` (
 --
 DROP TABLE IF EXISTS `listened`;
 
-CREATE TABLE `listened` (
+CREATE TABLE `listened` (
   `message_id` mediumint(9) NOT NULL,
   `user_id` mediumint(9) NOT NULL
 ) ENGINE=MyISAM;
