@@ -51,5 +51,5 @@ include asterisk
 Class['asterisk'] -> Class['::mysql::server']
 
 # chan_dongle
-#include chan_dongle
-#Class['chan_dongle'] -> Class['asterisk']
+include chan_dongle
+Class['chan_dongle'] -> Class['asterisk']

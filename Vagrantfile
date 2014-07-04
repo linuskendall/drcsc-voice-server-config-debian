@@ -46,6 +46,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
   config.vm.provision "shell", inline: "puppet module install puppetlabs-mysql"
   config.vm.provision "shell", inline: "puppet module install puppetlabs-apache"
+  config.vm.provision "shell", inline: "puppet module install puppetlabs-vcsrepo"
   config.vm.provision "shell", inline: "puppet module install example42-php"
   config.vm.provision "shell", inline: "puppet module install example42-perl"
   config.vm.provision "shell", inline: "puppet module install maestrodev-wget"
