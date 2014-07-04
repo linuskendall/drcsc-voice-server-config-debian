@@ -1,6 +1,13 @@
 Exec { logoutput => true, path => [ "/usr/bin", "/bin", "/sbin", "/usr/sbin"  ], }
 File { backup => true, }
 
+package { "build-essential":
+  ensure => "installed",
+}
+
+package { "vim":
+  ensure => "installed",
+}
 
 # Configuration settings
 #file { '/etc/sysconfig/selinux':
@@ -23,6 +30,20 @@ class {'mysql::server':
 
 class {'mysql::bindings':
   php_enable => 1,
+}
+
+file { '/tmp/messages.sql':
+  source => "puppet:///modules/asterisk/drcsc-voice/messages.sql",
+  ensure => "present",
+}
+
+mysql::db { 'drcsc':
+  user => 'drcsc',
+  password => 'drcsc',
+  host => 'localhost',
+  grant => 'ALL',
+  sql => "/tmp/messages.sql",
+  enforce_sql => true
 }
 
 # Asterisk 
