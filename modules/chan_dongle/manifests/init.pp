@@ -64,4 +64,7 @@ class chan_dongle {
   #  require =>  [ Exec['make_install'], File['/etc/asterisk/modules.conf'] ]
   #}
 
+  package { 'usb-modeswitch':
+    ensure => 'installed',
+  }
 }
