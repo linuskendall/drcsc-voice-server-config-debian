@@ -9,6 +9,10 @@ package { "vim":
   ensure => "installed",
 }
 
+package { "ntp":  
+  ensure => "installed",
+}
+
 # Configuration settings
 #file { '/etc/sysconfig/selinux':
 #  content => "SELINUX=disabled\nSELINUXTYPE=targeted",
@@ -45,6 +49,20 @@ mysql::db { 'drcsc':
   sql => "/tmp/messages.sql",
   enforce_sql => true
 }
+
+file { '/tmp/cdr.sql':
+  source => "puppet:///modules/asterisk/drcsc-voice/cdr.sql",
+  ensure => "present",
+}
+
+mysql::db { 'asterisk':
+  user => 'asterisk',
+  password => 'asterisk',
+  host => 'localhost',
+  grant => 'SELECT,INSERT',
+  sql => "/tmp/cdr.sql",
+  enforce_sql => true,
+} 
 
 # Asterisk 
 include asterisk
